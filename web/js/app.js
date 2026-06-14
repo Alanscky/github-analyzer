@@ -84,3 +84,76 @@ function renderRepositories(repositories) {
         list.appendChild(li);
     });
 }
+
+async function compareUsers() {
+
+    const user1 =
+        document.getElementById("compareUser1").value;
+
+    const user2 =
+        document.getElementById("compareUser2").value;
+
+    const response =
+        await fetch(
+            `/github/compare/${user1}/${user2}`
+        );
+
+    if (!response.ok) {
+
+        alert("Error al comparar usuarios");
+
+        return;
+    }
+
+    const data =
+        await response.json();
+
+    renderComparison(data);
+}
+
+function renderComparison(data) {
+
+    const result =
+        document.getElementById(
+            "comparisonResult"
+        );
+
+    result.innerHTML = `
+
+        <h3>Comparación</h3>
+
+        <table border="1">
+
+            <tr>
+                <th>Métrica</th>
+                <th>${data.user1.login}</th>
+                <th>${data.user2.login}</th>
+            </tr>
+
+            <tr>
+                <td>Followers</td>
+                <td>${data.user1.followers}</td>
+                <td>${data.user2.followers}</td>
+            </tr>
+
+            <tr>
+                <td>Repositorios</td>
+                <td>${data.user1.repos}</td>
+                <td>${data.user2.repos}</td>
+            </tr>
+
+            <tr>
+                <td>Lenguaje Principal</td>
+                <td>${data.user1.language}</td>
+                <td>${data.user2.language}</td>
+            </tr>
+
+            <tr>
+                <td>Repo Popular</td>
+                <td>${data.user1.popularRepo}</td>
+                <td>${data.user2.popularRepo}</td>
+            </tr>
+
+        </table>
+    `;
+}

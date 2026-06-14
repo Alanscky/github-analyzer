@@ -20,5 +20,7 @@ func SetupRoutes(r *gin.Engine) {
 
 	r.POST("/login", handlers.Login)
 
+	r.GET("/github/compare/:user1/:user2", handlers.CompareGithubUsers)
+
 	r.GET("/github/:username", handlers.GetGithubUser)
 }

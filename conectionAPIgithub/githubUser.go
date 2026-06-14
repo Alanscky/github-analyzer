@@ -8,7 +8,7 @@ import (
 	"os"
 )
 
-type githubUser struct {
+type GithubUser struct {
 	Name        string `json:"name"`
 	Login       string `json:"login"`
 	PublicRepos int    `json:"public_repos"`
@@ -17,7 +17,7 @@ type githubUser struct {
 	ReposUrl    string `json:"repos_url"`
 }
 
-func SearchUser(name string) githubUser {
+func SearchUser(name string) GithubUser {
 	url := "https://api.github.com/users/" + name
 
 	resp, err := http.Get(url)
@@ -27,7 +27,7 @@ func SearchUser(name string) githubUser {
 	}
 	defer resp.Body.Close()
 
-	var userGithub githubUser
+	var userGithub GithubUser
 
 	err = json.NewDecoder(resp.Body).Decode(&userGithub)
 	if err != nil {
@@ -37,7 +37,7 @@ func SearchUser(name string) githubUser {
 	return userGithub
 }
 
-func DescriptionUser(user githubUser) {
+func DescriptionUser(user GithubUser) {
 	fmt.Printf("\nname: %s\nlogin: %s\npublic repos: %d\nfollowers: %d\nlocation: %s\nrepos-url: %s\n",
 		user.Name, user.Login, user.PublicRepos, user.Followers, user.Location, user.ReposUrl)
 }
