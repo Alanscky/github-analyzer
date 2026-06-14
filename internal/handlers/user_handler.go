@@ -123,6 +123,7 @@ func DeleteUser(c *gin.Context) {
 		"message": "Usuario eliminado",
 	})
 }
+
 func Login(c *gin.Context) {
 
 	var request models.LoginRequest

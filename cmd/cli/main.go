@@ -9,6 +9,8 @@ import (
 	"github-analyzer/internal/database"
 	"github-analyzer/internal/models"
 	"github-analyzer/internal/services"
+
+	conectionapigithub "github-analyzer/conectionAPIgithub"
 )
 
 func main() {
@@ -125,7 +127,17 @@ func githubAnalyzerMenu(reader *bufio.Reader) {
 				username,
 			)
 
-			// Tu compañero conectará GitHub API aquí
+			var user = conectionapigithub.SearchUser(username)
+			conectionapigithub.DescriptionUser(user)
+
+			var repos = conectionapigithub.RepositoryListDeclaration(user.ReposUrl)
+			conectionapigithub.RepositoryDescriptionList(repos)
+
+			languages := conectionapigithub.CountLanguages(repos)
+			fmt.Println("")
+			for language, count := range languages {
+				fmt.Printf("%s: %d\n", language, count)
+			}
 
 		case "2":
 

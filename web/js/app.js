@@ -2,49 +2,52 @@ let chart = null;
 
 async function searchUser() {
 
-    const username = document.getElementById("username").value;
+    const username = 
+        document.getElementById("username").value;
 
-    if (!username) {
-        alert("Ingresa un usuario");
+    const response =
+        await fetch(`/github/${username}`);
+
+    if(!response.ok){
+        alert("Usuario no encontrado");
         return;
     }
 
-    /*
-      MÁS ADELANTE:
-      const response = await fetch(`/github/${username}`);
-      const data = await response.json();
-    */
+    const data =
+        await response.json();
 
-    const data = {
-        name: "Linus Torvalds",
-        login: username,
-        repos: 8,
-        followers: 250000,
-        language: "C",
-        popularRepo: "linux",
+    console.log(data);
 
-        languages: {
-            C: 70,
-            Python: 20,
-            Go: 10
-        }
-    };
+    document.getElementById("name")
+        .textContent = data.name;
 
-    document.getElementById("result").classList.remove("hidden");
+    document.getElementById("login")
+        .textContent = data.login;
 
-    document.getElementById("name").textContent = data.name;
-    document.getElementById("login").textContent = data.login;
-    document.getElementById("repos").textContent = data.repos;
-    document.getElementById("followers").textContent = data.followers;
-    document.getElementById("language").textContent = data.language;
-    document.getElementById("popularRepo").textContent = data.popularRepo;
+    document.getElementById("followers")
+        .textContent = "Followers: " + data.followers;
+
+    document.getElementById("repos")
+        .textContent = "Repositories total: " + data.repos;
+
+    document.getElementById("topLanguage")
+        .textContent = "Main Language: " + data.language;
+
+    document.getElementById("topRepo")
+        .textContent = "Main repo: " + data.popularRepo;
+    
+    console.log(JSON.stringify(data.repositoryList, null, 2));
 
     renderChart(data.languages);
+
+
+    renderRepositories(data.repositoryList);
 }
 
 function renderChart(languages) {
 
-    const ctx = document.getElementById("languageChart");
+    const ctx =
+        document.getElementById("languageChart");
 
     if (chart) {
         chart.destroy();
@@ -52,11 +55,32 @@ function renderChart(languages) {
 
     chart = new Chart(ctx, {
         type: "pie",
+
         data: {
             labels: Object.keys(languages),
+
             datasets: [{
                 data: Object.values(languages)
             }]
         }
+    });
+}
+
+function renderRepositories(repositories) {
+
+    const list =
+        document.getElementById("repositoryList");
+
+    list.innerHTML = "";
+
+    repositories.forEach(repo => {
+
+        const li =
+            document.createElement("li");
+
+        li.textContent =
+            `${repo.name} (${repo.language}): ${repo.description}`;
+
+        list.appendChild(li);
     });
 }

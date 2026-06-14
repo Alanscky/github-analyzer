@@ -15,10 +15,10 @@ func main() {
 
 	routes.SetupRoutes(r)
 
-	r.Static("/css", "./web/css")
-	r.Static("/js", "./web/js")
-	r.StaticFile("/", "./web/index.html")
-	r.StaticFile("/users-page", "./web/users.html")
+	r.Static("/css", "../web/css")
+	r.Static("/js", "../web/js")
+	r.StaticFile("/", "../web/index.html")
+	r.StaticFile("/users-page", "../web/users.html")
 
 	r.Run(":8080")
 }

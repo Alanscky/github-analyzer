@@ -19,4 +19,6 @@ func SetupRoutes(r *gin.Engine) {
 	r.DELETE("/users/:id", handlers.DeleteUser)
 
 	r.POST("/login", handlers.Login)
+
+	r.GET("/github/:username", handlers.GetGithubUser)
 }
